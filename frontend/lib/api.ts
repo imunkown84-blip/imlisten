@@ -1,9 +1,10 @@
 import axios, { AxiosError } from 'axios';
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8082';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 10000,
   headers: { 'Content-Type': 'application/json' }
 });
 
@@ -35,6 +36,12 @@ api.interceptors.response.use(
 
 export function extractErrorMessage(err: unknown): string {
   if (axios.isAxiosError(err)) {
+    if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+      return 'Server response timed out. Please check if the backend server is running on port 8082.';
+    }
+    if (err.code === 'ERR_NETWORK') {
+      return 'Cannot connect to backend server. Please verify backend is running on port 8082.';
+    }
     const data = err.response?.data as { message?: string; details?: string[] } | undefined;
     if (data?.details?.length) return data.details.join(', ');
     if (data?.message) return data.message;

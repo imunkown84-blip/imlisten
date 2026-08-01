@@ -5,9 +5,13 @@ spring:
   application:
     name: music-catalog-insights
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/music_catalog}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: ${DB_URL:${DATABASE_URL:jdbc:h2:mem:musiccatalog;DB_CLOSE_DELAY=-1}}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   jpa:
     hibernate:
       ddl-auto: update
@@ -24,4 +28,4 @@ app:
   itunes:
     base-url: https://itunes.apple.com
   cors:
-    allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:3001}
