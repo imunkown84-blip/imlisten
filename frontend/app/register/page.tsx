@@ -25,20 +25,20 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-12">
-      <div className="text-center mb-8">
-        <div className="inline-block bg-retro-ink text-retro-bg px-3 py-1 rounded border-2 border-retro-ink font-mono text-xs font-bold mb-3 shadow-retro-sm">
+    <div className="max-w-md mx-auto mt-4 sm:mt-12 px-2 sm:px-0">
+      <div className="text-center mb-6 sm:mb-8">
+        <div className="inline-block bg-retro-ink dark:bg-stone-100 text-retro-bg dark:text-stone-950 px-3 py-1 rounded border-2 border-retro-ink dark:border-stone-100 font-mono text-xs font-bold mb-3 shadow-retro-sm">
           NEW USER REGISTRATION
         </div>
-        <h1 className="text-3xl font-bold font-sans text-retro-ink">
+        <h1 className="text-2xl sm:text-3xl font-bold font-sans text-retro-ink dark:text-stone-100">
           Create <span className="font-serif italic font-normal text-retro-accent">Account</span>
         </h1>
-        <p className="text-stone-600 font-mono text-xs mt-1">Start building your song library & analytics profile</p>
+        <p className="text-stone-600 dark:text-stone-400 font-mono text-xs mt-1">Start building your song library & analytics profile</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="card flex flex-col gap-5 p-6 shadow-retro-lg">
+      <form onSubmit={handleSubmit} className="card flex flex-col gap-4 sm:gap-5 p-4 sm:p-6 shadow-retro-lg">
         <div>
-          <label className="text-xs font-mono font-bold text-stone-700 mb-1.5 block uppercase tracking-wider">
+          <label className="text-xs font-mono font-bold text-stone-700 dark:text-stone-300 mb-1.5 block uppercase tracking-wider">
             Choose Username
           </label>
           <input

@@ -96,7 +96,7 @@ export default function SearchPage() {
     <div>
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b-2 border-retro-ink dark:border-stone-700 gap-2">
         <div>
-          <h1 className="text-3xl font-bold font-sans tracking-tight text-retro-ink dark:text-stone-100">
+          <h1 className="text-2xl sm:text-3xl font-bold font-sans tracking-tight text-retro-ink dark:text-stone-100">
             Search <span className="font-serif italic font-normal text-retro-accent">Catalog</span>
           </h1>
           <p className="text-stone-600 dark:text-stone-400 font-mono text-xs mt-1">

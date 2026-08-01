@@ -104,23 +104,38 @@ html, body {
 /* ─── Retro Cassette/Hi-Fi Mini Player ─── */
 .mini-player {
   position: fixed;
-  bottom: 1rem;
+  bottom: 0.75rem;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - 2rem);
+  width: calc(100% - 1.25rem);
   max-width: 52rem;
   z-index: 50;
   background: #fffdf9;
   border: 2px solid #1c1917;
   border-radius: 12px;
-  box-shadow: 6px 6px 0px 0px #1c1917;
+  box-shadow: 4px 4px 0px 0px #1c1917;
+  overflow: hidden;
   animation: retro-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+  .mini-player {
+    bottom: 1.25rem;
+    width: calc(100% - 2rem);
+    box-shadow: 6px 6px 0px 0px #1c1917;
+  }
 }
 
 .dark .mini-player {
   background: #18181b;
   border-color: #3f3f46;
-  box-shadow: 6px 6px 0px 0px #000000;
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+@media (min-width: 640px) {
+  .dark .mini-player {
+    box-shadow: 6px 6px 0px 0px #000000;
+  }
 }
 
 @keyframes retro-slide-up {
@@ -128,20 +143,53 @@ html, body {
   to { transform: translate(-50%, 0); opacity: 1; }
 }
 
+.mini-player-progress-container {
+  width: 100%;
+  height: 6px;
+  background: #eae5d9;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark .mini-player-progress-container {
+  background: #27272a;
+}
+
+.mini-player-progress-fill {
+  height: 100%;
+  background: #c85a32;
+  transition: width 0.15s linear;
+}
+
 .mini-player-inner {
-  padding: 10px 16px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .mini-player-inner {
+    padding: 10px 16px;
+    gap: 14px;
+  }
 }
 
 .mini-player-artwork {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 6px;
   border: 2px solid #1c1917;
   object-fit: cover;
   flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .mini-player-artwork {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 .dark .mini-player-artwork {
@@ -163,12 +211,18 @@ html, body {
 
 .mini-player-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.825rem;
   font-weight: 700;
   color: #1c1917;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media (min-width: 640px) {
+  .mini-player-title {
+    font-size: 0.9rem;
+  }
 }
 
 .dark .mini-player-title {
@@ -177,11 +231,17 @@ html, body {
 
 .mini-player-artist {
   font-family: 'Space Mono', monospace;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #78716c;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media (min-width: 640px) {
+  .mini-player-artist {
+    font-size: 0.75rem;
+  }
 }
 
 .dark .mini-player-artist {
@@ -189,8 +249,8 @@ html, body {
 }
 
 .mini-player-btn {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,6 +262,13 @@ html, body {
   cursor: pointer;
   flex-shrink: 0;
   transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+@media (min-width: 640px) {
+  .mini-player-btn {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .dark .mini-player-btn {

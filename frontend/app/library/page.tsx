@@ -67,22 +67,22 @@ export default function LibraryPage() {
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b-2 border-retro-ink gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b-2 border-retro-ink dark:border-stone-700 gap-2">
         <div>
-          <h1 className="text-3xl font-bold font-sans tracking-tight text-retro-ink">
+          <h1 className="text-2xl sm:text-3xl font-bold font-sans tracking-tight text-retro-ink dark:text-stone-100">
             My <span className="font-serif italic font-normal text-retro-accent">Library</span>
           </h1>
-          <p className="text-stone-600 font-mono text-xs mt-1">
+          <p className="text-stone-600 dark:text-stone-400 font-mono text-xs mt-1">
             Personal Saved Collection & Notes
           </p>
         </div>
-        <div className="font-mono text-xs bg-retro-paper px-3 py-1 rounded border border-stone-300 text-stone-700 self-start sm:self-auto">
+        <div className="font-mono text-xs bg-retro-paper dark:bg-stone-800 px-3 py-1 rounded border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 self-start sm:self-auto">
           📀 {items.length} {items.length === 1 ? 'Track' : 'Tracks'} Saved
         </div>
       </div>
 
       {error && (
-        <div className="p-3 mb-6 bg-red-50 border-2 border-red-800 rounded text-red-800 font-mono text-xs shadow-retro-sm">
+        <div className="p-3 mb-6 bg-red-50 dark:bg-red-950/40 border-2 border-red-800 rounded text-red-800 dark:text-red-300 font-mono text-xs shadow-retro-sm">
           ⚠️ {error}
         </div>
       )}

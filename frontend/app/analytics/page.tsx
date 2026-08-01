@@ -82,32 +82,32 @@ export default function AnalyticsPage() {
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b-2 border-retro-ink gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b-2 border-retro-ink dark:border-stone-700 gap-2">
         <div>
-          <h1 className="text-3xl font-bold font-sans tracking-tight text-retro-ink">
+          <h1 className="text-2xl sm:text-3xl font-bold font-sans tracking-tight text-retro-ink dark:text-stone-100">
             Library <span className="font-serif italic font-normal text-retro-accent">Analytics</span>
           </h1>
-          <p className="text-stone-600 font-mono text-xs mt-1">
+          <p className="text-stone-600 dark:text-stone-400 font-mono text-xs mt-1">
             Data Insights & AI Recommendation Engine
           </p>
         </div>
-        <div className="font-mono text-xs bg-retro-paper px-3 py-1 rounded border border-stone-300 text-stone-700 self-start sm:self-auto">
+        <div className="font-mono text-xs bg-retro-paper dark:bg-stone-800 px-3 py-1 rounded border border-stone-300 dark:border-stone-700 text-stone-700 dark:text-stone-300 self-start sm:self-auto">
           📊 Active Profile
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
         <div className="card">
-          <p className="text-xs font-mono font-bold text-stone-500 uppercase tracking-wider">Total Tracks</p>
-          <p className="text-3xl font-bold font-mono text-retro-ink mt-1">{analytics.totalTracks}</p>
+          <p className="text-xs font-mono font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Total Tracks</p>
+          <p className="text-2xl sm:text-3xl font-bold font-mono text-retro-ink dark:text-stone-100 mt-1">{analytics.totalTracks}</p>
         </div>
         <div className="card">
-          <p className="text-xs font-mono font-bold text-stone-500 uppercase tracking-wider">Average Rating</p>
-          <p className="text-3xl font-bold font-mono text-retro-accent mt-1">★ {analytics.averageRating.toFixed(1)} <span className="text-sm font-normal text-stone-500">/ 5</span></p>
+          <p className="text-xs font-mono font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Average Rating</p>
+          <p className="text-2xl sm:text-3xl font-bold font-mono text-retro-accent mt-1">★ {analytics.averageRating.toFixed(1)} <span className="text-sm font-normal text-stone-500 dark:text-stone-400">/ 5</span></p>
         </div>
         <div className="card">
-          <p className="text-xs font-mono font-bold text-stone-500 uppercase tracking-wider">Avg Length</p>
-          <p className="text-3xl font-bold font-mono text-retro-ink mt-1">
+          <p className="text-xs font-mono font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider">Avg Length</p>
+          <p className="text-2xl sm:text-3xl font-bold font-mono text-retro-ink dark:text-stone-100 mt-1">
             {Math.floor(analytics.averageDurationSeconds / 60)}:
             {Math.round(analytics.averageDurationSeconds % 60)
               .toString()
@@ -116,16 +116,16 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <div className="card">
-          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 mb-4 pb-2 border-b border-stone-200">
+          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-4 pb-2 border-b border-stone-200 dark:border-stone-800">
             📊 Tracks by Genre
           </p>
-          <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={genreData}>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={genreData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" vertical={false} />
-              <XAxis dataKey="name" tick={{ fontSize: 11, fontFamily: 'Space Mono' }} />
-              <YAxis allowDecimals={false} tick={{ fontSize: 11, fontFamily: 'Space Mono' }} />
+              <XAxis dataKey="name" tick={{ fontSize: 10, fontFamily: 'Space Mono' }} />
+              <YAxis allowDecimals={false} tick={{ fontSize: 10, fontFamily: 'Space Mono' }} />
               <Tooltip contentStyle={{ backgroundColor: '#fffdf9', borderColor: '#1c1917', borderRadius: '6px', fontFamily: 'Space Mono', fontSize: '12px' }} />
               <Bar dataKey="value" fill="#c85a32" radius={[3, 3, 0, 0]} />
             </BarChart>
@@ -133,14 +133,14 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="card">
-          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 mb-4 pb-2 border-b border-stone-200">
+          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-4 pb-2 border-b border-stone-200 dark:border-stone-800">
             🎤 Top Artists
           </p>
-          <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={artistData} layout="vertical" margin={{ left: 20 }}>
+          <ResponsiveContainer width="100%" height={220}>
+            <BarChart data={artistData} layout="vertical" margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" horizontal={false} />
-              <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fontFamily: 'Space Mono' }} />
-              <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 11, fontFamily: 'Space Mono' }} />
+              <XAxis type="number" allowDecimals={false} tick={{ fontSize: 10, fontFamily: 'Space Mono' }} />
+              <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 10, fontFamily: 'Space Mono' }} />
               <Tooltip contentStyle={{ backgroundColor: '#fffdf9', borderColor: '#1c1917', borderRadius: '6px', fontFamily: 'Space Mono', fontSize: '12px' }} />
               <Bar dataKey="value" fill="#57534e" radius={[0, 3, 3, 0]} />
             </BarChart>
@@ -148,14 +148,14 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="card">
-          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 mb-4 pb-2 border-b border-stone-200">
+          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-4 pb-2 border-b border-stone-200 dark:border-stone-800">
             📅 Timeline Distribution
           </p>
-          <ResponsiveContainer width="100%" height={240}>
-            <LineChart data={yearData}>
+          <ResponsiveContainer width="100%" height={220}>
+            <LineChart data={yearData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" vertical={false} />
-              <XAxis dataKey="year" tick={{ fontSize: 11, fontFamily: 'Space Mono' }} />
-              <YAxis allowDecimals={false} tick={{ fontSize: 11, fontFamily: 'Space Mono' }} />
+              <XAxis dataKey="year" tick={{ fontSize: 10, fontFamily: 'Space Mono' }} />
+              <YAxis allowDecimals={false} tick={{ fontSize: 10, fontFamily: 'Space Mono' }} />
               <Tooltip contentStyle={{ backgroundColor: '#fffdf9', borderColor: '#1c1917', borderRadius: '6px', fontFamily: 'Space Mono', fontSize: '12px' }} />
               <Line type="monotone" dataKey="value" stroke="#d97706" strokeWidth={2} dot={{ r: 4, fill: '#1c1917' }} />
             </LineChart>
@@ -163,31 +163,31 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="card">
-          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 mb-4 pb-2 border-b border-stone-200">
+          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-4 pb-2 border-b border-stone-200 dark:border-stone-800">
             ⭐ Rating Distribution
           </p>
-          <ResponsiveContainer width="100%" height={240}>
+          <ResponsiveContainer width="100%" height={220}>
             <PieChart>
-              <Pie data={ratingData} dataKey="value" nameKey="name" innerRadius={45} outerRadius={85} paddingAngle={3}>
+              <Pie data={ratingData} dataKey="value" nameKey="name" innerRadius={40} outerRadius={75} paddingAngle={3}>
                 {ratingData.map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="#1c1917" strokeWidth={1} />
                 ))}
               </Pie>
-              <Legend wrapperStyle={{ fontFamily: 'Space Mono', fontSize: '11px' }} />
+              <Legend wrapperStyle={{ fontFamily: 'Space Mono', fontSize: '10px' }} />
               <Tooltip contentStyle={{ backgroundColor: '#fffdf9', borderColor: '#1c1917', borderRadius: '6px', fontFamily: 'Space Mono', fontSize: '12px' }} />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         <div className="card lg:col-span-2">
-          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 mb-4 pb-2 border-b border-stone-200">
+          <p className="font-bold font-mono text-xs uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-4 pb-2 border-b border-stone-200 dark:border-stone-800">
             ⏱ Track Length Histogram
           </p>
           <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={durationData}>
+            <BarChart data={durationData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e7e5e4" vertical={false} />
-              <XAxis dataKey="name" tick={{ fontSize: 11, fontFamily: 'Space Mono' }} />
-              <YAxis allowDecimals={false} tick={{ fontSize: 11, fontFamily: 'Space Mono' }} />
+              <XAxis dataKey="name" tick={{ fontSize: 10, fontFamily: 'Space Mono' }} />
+              <YAxis allowDecimals={false} tick={{ fontSize: 10, fontFamily: 'Space Mono' }} />
               <Tooltip contentStyle={{ backgroundColor: '#fffdf9', borderColor: '#1c1917', borderRadius: '6px', fontFamily: 'Space Mono', fontSize: '12px' }} />
               <Bar dataKey="value" fill="#c85a32" radius={[3, 3, 0, 0]} />
             </BarChart>
@@ -195,15 +195,15 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      <div className="card mt-8">
-        <div className="flex items-center justify-between pb-3 mb-4 border-b-2 border-retro-ink">
+      <div className="card mt-6 sm:mt-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-4 border-b-2 border-retro-ink dark:border-stone-700">
           <div>
-            <h2 className="text-xl font-bold font-sans text-retro-ink">
+            <h2 className="text-lg sm:text-xl font-bold font-sans text-retro-ink dark:text-stone-100">
               🤖 AI <span className="font-serif italic font-normal text-retro-accent">Recommendations</span>
             </h2>
-            {recs && <p className="text-xs font-mono text-stone-500 mt-0.5">Profile context: {recs.basedOn}</p>}
+            {recs && <p className="text-xs font-mono text-stone-500 dark:text-stone-400 mt-0.5">{recs.basedOn}</p>}
           </div>
-          <span className="text-xs font-mono bg-retro-accent text-white px-2.5 py-1 rounded border border-retro-ink shadow-retro-sm">
+          <span className="text-xs font-mono bg-retro-accent text-white px-2.5 py-1 rounded border border-retro-ink dark:border-stone-900 shadow-retro-sm self-start sm:self-auto">
             SMART MATCH
           </span>
         </div>
@@ -215,15 +215,15 @@ export default function AnalyticsPage() {
         )}
 
         {!recsLoading && recs && recs.recommendations.length > 0 && (
-          <div className="grid sm:grid-cols-2 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
             {recs.recommendations.map((r) => (
-              <div key={r.appleCatalogId} className="flex gap-3 items-center border-2 border-stone-300 rounded-lg p-3 bg-retro-paper/50 hover:border-retro-ink transition-all">
+              <div key={r.appleCatalogId} className="flex gap-3 items-center border-2 border-stone-300 dark:border-stone-700 rounded-lg p-3 bg-retro-paper/50 dark:bg-stone-800/50 hover:border-retro-ink dark:hover:border-stone-500 transition-all">
                 <div className="relative flex-shrink-0 group">
                   {r.artworkUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={r.artworkUrl} alt={r.title} className="w-12 h-12 rounded border border-retro-ink object-cover" />
+                    <img src={r.artworkUrl} alt={r.title} className="w-12 h-12 rounded border border-retro-ink dark:border-stone-700 object-cover" />
                   ) : (
-                    <div className="w-12 h-12 rounded border border-retro-ink bg-stone-200" />
+                    <div className="w-12 h-12 rounded border border-retro-ink dark:border-stone-700 bg-stone-200 dark:bg-stone-800" />
                   )}
                   {r.previewUrl && (
                     <div className="absolute inset-0 flex items-center justify-center bg-stone-900/40 rounded opacity-0 group-hover:opacity-100 transition-opacity">
@@ -232,9 +232,9 @@ export default function AnalyticsPage() {
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold font-sans text-retro-ink truncate">{r.title}</p>
-                  <p className="text-xs font-mono text-stone-600 truncate">{r.artistName}</p>
-                  <p className="text-[11px] font-mono text-retro-accent font-semibold mt-1">✨ {r.reason}</p>
+                  <p className="text-sm font-bold font-sans text-retro-ink dark:text-stone-100 truncate">{r.title}</p>
+                  <p className="text-xs font-mono text-stone-600 dark:text-stone-400 truncate">{r.artistName}</p>
+                  <p className="text-[11px] font-mono text-retro-accent font-semibold mt-1 truncate">✨ {r.reason}</p>
                 </div>
               </div>
             ))}
