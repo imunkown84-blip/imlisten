@@ -8,7 +8,8 @@ import SongCard from '@/components/SongCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import EmptyState from '@/components/EmptyState';
 
-const DEBOUNCE_MS = 400;
+const DEBOUNCE_MS = 700;
+const MIN_QUERY_LENGTH = 2;
 
 export default function SearchPage() {
   const { username, isLoading: authLoading } = useRequireAuth();
@@ -34,7 +35,14 @@ export default function SearchPage() {
   }, [username, loadLibraryIds]);
 
   useEffect(() => {
-    if (!query.trim()) {
+    const trimmed = query.trim();
+    if (!trimmed) {
+      setResults([]);
+      setHasSearched(false);
+      setError(null);
+      return;
+    }
+    if (trimmed.length < MIN_QUERY_LENGTH) {
       setResults([]);
       setHasSearched(false);
       return;
@@ -44,12 +52,17 @@ export default function SearchPage() {
       setError(null);
       try {
         const { data } = await api.get<SearchResult[]>('/api/search', {
-          params: { query, type: 'song', limit: 25 }
+          params: { query: trimmed, type: 'song', limit: 25 }
         });
         setResults(data);
         setHasSearched(true);
-      } catch (err) {
-        setError(extractErrorMessage(err));
+      } catch (err: any) {
+        const status = err?.response?.status;
+        if (status === 429) {
+          setError('Search is temporarily busy — please wait a moment and try again.');
+        } else {
+          setError(extractErrorMessage(err));
+        }
       } finally {
         setLoading(false);
       }

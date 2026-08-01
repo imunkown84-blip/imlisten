@@ -54,10 +54,19 @@ public class RecommendationService {
         List<String> seedTerms = pickSeedTerms(genreAffinity, artistAffinity);
 
         Map<Long, SearchResultDto> candidates = new LinkedHashMap<>();
-        for (String term : seedTerms) {
+        for (int i = 0; i < seedTerms.size(); i++) {
+            String term = seedTerms.get(i);
             try {
+                // Space out calls to avoid burst-firing and hitting Apple's rate limit
+                if (i > 0) {
+                    Thread.sleep(500);
+                }
                 itunesService.searchTopByTerm(term, CANDIDATE_POOL_PER_TERM)
                         .forEach(track -> candidates.putIfAbsent(track.appleCatalogId(), track));
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                log.warn("Recommendation candidate search interrupted");
+                break;
             } catch (Exception e) {
                 log.warn("Recommendation candidate search failed for term '{}': {}", term, e.getMessage());
             }

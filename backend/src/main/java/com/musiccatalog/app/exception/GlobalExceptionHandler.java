@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UpstreamApiException.class)
     public ResponseEntity<ErrorResponse> handleUpstream(UpstreamApiException ex, HttpServletRequest req) {
-        return build(HttpStatus.BAD_GATEWAY, ex.getMessage(), req, null);
+        HttpStatus status = ex.isRateLimited() ? HttpStatus.TOO_MANY_REQUESTS : HttpStatus.BAD_GATEWAY;
+        return build(status, ex.getMessage(), req, null);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
