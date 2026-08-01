@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8082}
+
+spring:
+  application:
+    name: music-catalog-insights
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/music_catalog}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-this-to-a-long-random-secret-in-production-please-01234567890}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  itunes:
+    base-url: https://itunes.apple.com
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000}

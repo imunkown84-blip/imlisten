@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  height: 100%;
+  background-color: #f7f4ee;
+  color: #1c1917;
+}
+
+/* Retro utilities */
+.retro-border {
+  border: 2px solid #1c1917;
+}
+
+.retro-shadow {
+  box-shadow: 3px 3px 0px 0px #1c1917;
+}
+
+.retro-shadow-sm {
+  box-shadow: 2px 2px 0px 0px #1c1917;
+}
+
+.retro-shadow-lg {
+  box-shadow: 5px 5px 0px 0px #1c1917;
+}
+
+.card {
+  @apply bg-retro-card dark:bg-stone-900 rounded-lg border-2 border-retro-ink dark:border-stone-700 shadow-retro dark:shadow-[3px_3px_0px_0px_#000000] p-5 transition-transform hover:-translate-y-0.5;
+}
+
+.btn-primary {
+  @apply bg-retro-accent hover:bg-retro-accentHover text-white font-mono font-medium text-sm px-4 py-2 rounded border-2 border-retro-ink dark:border-stone-900 shadow-retro-sm transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-retro-sm;
+}
+
+.btn-secondary {
+  @apply bg-retro-card dark:bg-stone-800 hover:bg-retro-paper dark:hover:bg-stone-700 text-retro-ink dark:text-stone-100 font-mono font-medium text-sm px-4 py-2 rounded border-2 border-retro-ink dark:border-stone-700 shadow-retro-sm transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none;
+}
+
+.input {
+  @apply w-full bg-retro-card dark:bg-stone-900 border-2 border-retro-ink dark:border-stone-700 rounded px-3 py-2 text-retro-ink dark:text-stone-100 font-mono placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-retro-accent focus:shadow-retro-sm transition-all;
+}
+
+/* ─── Play Button ─── */
+.play-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  color: #fffdf9;
+  background: #c85a32;
+  border: 2px solid #1c1917;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px 0px #1c1917;
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+
+.dark .play-btn {
+  border-color: #f4f4f5;
+  box-shadow: 2px 2px 0px 0px #000000;
+}
+
+.play-btn:hover {
+  transform: translate(-1px, -1px);
+  background: #b04923;
+  box-shadow: 3px 3px 0px 0px #1c1917;
+}
+
+.dark .play-btn:hover {
+  box-shadow: 3px 3px 0px 0px #000000;
+}
+
+.play-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px 0px #1c1917;
+}
+
+.play-btn-sm {
+  width: 30px;
+  height: 30px;
+  padding: 6px;
+}
+
+.play-btn-md {
+  width: 38px;
+  height: 38px;
+  padding: 8px;
+}
+
+.play-btn-active {
+  background: #1c1917;
+  color: #f7f4ee;
+  border-color: #c85a32;
+  box-shadow: 2px 2px 0px 0px #c85a32;
+}
+
+.dark .play-btn-active {
+  background: #f4f4f5;
+  color: #18181b;
+  border-color: #c85a32;
+}
+
+/* ─── Retro Cassette/Hi-Fi Mini Player ─── */
+.mini-player {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 2rem);
+  max-width: 52rem;
+  z-index: 50;
+  background: #fffdf9;
+  border: 2px solid #1c1917;
+  border-radius: 12px;
+  box-shadow: 6px 6px 0px 0px #1c1917;
+  animation: retro-slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .mini-player {
+  background: #18181b;
+  border-color: #3f3f46;
+  box-shadow: 6px 6px 0px 0px #000000;
+}
+
+@keyframes retro-slide-up {
+  from { transform: translate(-50%, 100%); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.mini-player-inner {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mini-player-artwork {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  border: 2px solid #1c1917;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.dark .mini-player-artwork {
+  border-color: #3f3f46;
+}
+
+.mini-player-artwork-placeholder {
+  background: #eae5d9;
+}
+
+.dark .mini-player-artwork-placeholder {
+  background: #27272a;
+}
+
+.mini-player-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.mini-player-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1c1917;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dark .mini-player-title {
+  color: #f4f4f5;
+}
+
+.mini-player-artist {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: #78716c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dark .mini-player-artist {
+  color: #a1a1aa;
+}
+
+.mini-player-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #c85a32;
+  color: #fffdf9;
+  border: 2px solid #1c1917;
+  box-shadow: 2px 2px 0px 0px #1c1917;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.dark .mini-player-btn {
+  border-color: #3f3f46;
+  box-shadow: 2px 2px 0px 0px #000000;
+}
+
+.mini-player-btn:hover {
+  background: #b04923;
+  transform: translate(-1px, -1px);
+}
+
+.mini-player-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px 0px #1c1917;
+}
+
+.mini-player-time {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.725rem;
+  color: #78716c;
+  white-space: nowrap;
+  min-width: 75px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.dark .mini-player-time {
+  color: #a1a1aa;
+}
+
+.mini-player-progress {
+  flex: 2;
+  height: 8px;
+  background: #eae5d9;
+  border: 2px solid #1c1917;
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+  min-width: 80px;
+  position: relative;
+}
+
+.dark .mini-player-progress {
+  background: #27272a;
+  border-color: #3f3f46;
+}
+
+.mini-player-progress-fill {
+  height: 100%;
+  background: #c85a32;
+  border-radius: 2px;
+  transition: width 0.15s linear;
+}
+
+
