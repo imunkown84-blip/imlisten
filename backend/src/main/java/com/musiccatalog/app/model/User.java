@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.time.Instant;
 
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
+@Table(name = "music_users", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 @Getter
 @Setter
 @NoArgsConstructor

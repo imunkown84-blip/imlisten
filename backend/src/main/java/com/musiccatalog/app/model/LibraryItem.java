@@ -16,7 +16,7 @@ import java.time.LocalDate;
  * beyond what the user explicitly chooses to save.
  */
 @Entity
-@Table(name = "library_items", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "apple_catalog_id"}))
+@Table(name = "music_library_items", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "apple_catalog_id"}))
 @Getter
 @Setter
 @NoArgsConstructor
