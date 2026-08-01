@@ -309,33 +309,54 @@ The platform features an **explainable, deterministic, content-based recommendat
 
 ---
 
-## 🌐 Deployment
+## 🌐 Deployment Guide
 
-### Backend Deployment (Render / Railway / Docker)
+### Part 1: Deploying Backend & Database on Render
 
-1. **Environment Variables**:
-   - `DB_URL`: `jdbc:postgresql://<HOST>:<PORT>/<DB_NAME>`
+#### Step 1: Create PostgreSQL Database on Render
+1. Log in to [Render Dashboard](https://dashboard.render.com/).
+2. Click **New +** $\rightarrow$ **PostgreSQL**.
+3. Name your database (e.g., `music-catalog-db`).
+4. Select your preferred region and tier (Free tier available).
+5. Click **Create Database**.
+6. Once provisioned, note down the following connection details from the Info page:
+   - **Internal Database URL** (e.g., `postgres://user:password@dpg-xxx/music_catalog`)
+   - **Host**, **Database**, **User**, **Password**, and **Port** (5432).
+
+#### Step 2: Deploy Spring Boot Web Service on Render
+1. Click **New +** $\rightarrow$ **Web Service**.
+2. Connect your GitHub repository (`imunkown84-blip/imlisten`).
+3. Select **Docker** as the Runtime (Render auto-detects `backend/Dockerfile`).
+4. Set **Root Directory** to `backend`.
+5. Under **Environment Variables**, add:
+   - `DB_URL`: `jdbc:postgresql://<HOSTNAME>:5432/<DATABASE_NAME>` *(Prepend `jdbc:` to the Postgres connection string)*
    - `DB_USERNAME`: `<POSTGRES_USER>`
    - `DB_PASSWORD`: `<POSTGRES_PASSWORD>`
-   - `JWT_SECRET`: `<STRONG_BASE64_SECRET>`
-   - `CORS_ORIGINS`: `https://your-frontend-domain.vercel.app`
-2. **Build Command**:
-   ```bash
-   mvn clean package -DskipTests
-   ```
-3. **Start Command**:
-   ```bash
-   java -jar target/app-1.0.0.jar
-   ```
+   - `JWT_SECRET`: Generate a random secret string (e.g., `openssl rand -base64 48`)
+   - `CORS_ORIGINS`: `https://<YOUR_VERCEL_APP_NAME>.vercel.app` *(Update this after deploying frontend)*
+6. Click **Create Web Service**.
+7. Copy your deployed backend URL (e.g., `https://music-catalog-backend.onrender.com`).
 
-### Frontend Deployment (Vercel / Netlify)
+---
 
-1. **Environment Variables**:
-   - `NEXT_PUBLIC_API_BASE_URL`: `https://your-backend-domain.onrender.com`
-2. **Build Command**:
-   ```bash
-   npm run build
-   ```
+### Part 2: Deploying Frontend on Vercel
+
+#### Step 1: Import Project into Vercel
+1. Log in to [Vercel Dashboard](https://vercel.com/dashboard).
+2. Click **Add New...** $\rightarrow$ **Project**.
+3. Import your GitHub repository (`imunkown84-blip/imlisten`).
+
+#### Step 2: Configure Project Settings
+1. **Framework Preset**: Next.js (Auto-detected).
+2. **Root Directory**: Click **Edit** and set it to `frontend`.
+3. Expand **Environment Variables** and add:
+   - `NEXT_PUBLIC_API_BASE_URL`: `https://<YOUR_RENDER_BACKEND_URL>.onrender.com`
+4. Click **Deploy**.
+
+#### Step 3: Connect Backend CORS
+1. Go back to your Render Backend Web Service $\rightarrow$ **Environment Variables**.
+2. Update `CORS_ORIGINS` to match your exact Vercel frontend URL (e.g., `https://music-catalog-frontend.vercel.app`).
+3. Save changes — Render will automatically redeploy the backend with the new CORS origin allowed!
 
 ---
 
