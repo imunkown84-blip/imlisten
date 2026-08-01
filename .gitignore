@@ -1,13 +1,61 @@
-# backend
-backend/target/
-*.class
+# Environment files
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+!.env.example
+!.env*.example
 
-# frontend
+# Node / Frontend
+node_modules/
 frontend/node_modules/
 frontend/.next/
 frontend/out/
-frontend/.env.local
+frontend/build/
+.next/
+out/
+build/
+.pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+npm-debug.log*
 
-# misc
+# Java / Maven / Backend
+target/
+backend/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# IDE & Editor files
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+*.factorypath
+
+# OS & System files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary files
 *.log
+*.tmp
+*.bak
+tmp/
