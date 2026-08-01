@@ -163,7 +163,7 @@ music-catalog-insights/
 
 2. **Environment Configuration**:
    ```bash
-   cp .env.local.example .env.local
+   cp .env
    ```
    *By default, `.env.local` points to `http://localhost:8080`.*
 
