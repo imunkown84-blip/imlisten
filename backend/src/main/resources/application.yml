@@ -30,4 +30,4 @@ app:
     cache-ttl-minutes: 5
     max-requests-per-minute: 15
   cors:
-    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:3001}
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:3001,https://imlisten.vercel.app}
