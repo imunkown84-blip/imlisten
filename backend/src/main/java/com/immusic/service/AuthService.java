@@ -27,12 +27,17 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
-        if (appUserRepository.existsByEmail(request.getEmail())) {
-            throw new DuplicateResourceException("Email already registered");
+        String identifier = request.getEmail();
+        if (identifier == null || identifier.isBlank()) {
+            throw new IllegalArgumentException("Username or email is required");
+        }
+
+        if (appUserRepository.existsByEmail(identifier.toLowerCase())) {
+            throw new DuplicateResourceException("Username or email already registered");
         }
 
         AppUser user = AppUser.builder()
-                .email(request.getEmail().toLowerCase())
+                .email(identifier.toLowerCase())
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .build();
 
@@ -48,7 +53,12 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        String email = request.getEmail().toLowerCase();
+        String identifier = request.getEmail();
+        if (identifier == null || identifier.isBlank()) {
+            throw new IllegalArgumentException("Username or email is required");
+        }
+        String email = identifier.toLowerCase();
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, request.getPassword())
         );
@@ -71,6 +81,7 @@ public class AuthService {
                 .token(token)
                 .tokenType("Bearer")
                 .expiresInMs(jwtService.getExpirationMs())
+                .username(userDetails.getUsername())
                 .build();
     }
 }

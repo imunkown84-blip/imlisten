@@ -1,26 +1,45 @@
 package com.immusic.dto.auth;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class RegisterRequest {
 
-    @NotBlank
-    @Email
     private String email;
+    private String username;
 
-    @NotBlank
-    @Size(min = 8, max = 100)
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, max = 100, message = "Password must be at least 6 characters")
     private String password;
+
+    public String getEmail() {
+        if (email != null && !email.isBlank()) {
+            return email;
+        }
+        return username;
+    }
+
+    public String getUsername() {
+        if (username != null && !username.isBlank()) {
+            return username;
+        }
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @NotBlank(message = "Username or email is required")
+    public String getIdentifier() {
+        return getEmail();
+    }
 }
