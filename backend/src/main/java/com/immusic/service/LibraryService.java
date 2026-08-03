@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,13 @@ public class LibraryService {
 
     private final LibraryItemRepository libraryItemRepository;
     private final AppUserRepository appUserRepository;
+
+    @Transactional(readOnly = true)
+    public List<LibraryItemResponse> findAll(UUID userId) {
+        return libraryItemRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
 
     @Transactional(readOnly = true)
     public Page<LibraryItemResponse> listLibrary(UUID userId, String genre, Pageable pageable) {
@@ -36,7 +45,7 @@ public class LibraryService {
     @Transactional
     public LibraryItemResponse create(UUID userId, CreateLibraryItemRequest request) {
         if (libraryItemRepository.existsByUserIdAndAppleCatalogId(userId, request.getAppleCatalogId())) {
-            throw new DuplicateResourceException("Album already exists in library");
+            throw new DuplicateResourceException("Track already exists in library");
         }
 
         AppUser user = appUserRepository.findById(userId)

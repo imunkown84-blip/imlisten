@@ -25,11 +25,18 @@ public class SearchService {
 
     private final RestClient restClient = RestClient.create();
 
-    @Cacheable(value = "itunesSearch", key = "#query.toLowerCase()")
-    public SearchResponse searchAlbums(String query) {
+    @Cacheable(value = "itunesSearch", key = "#query.toLowerCase() + '_' + #type.toLowerCase()")
+    public SearchResponse searchCatalog(String query, String type) {
+        String entity = "song";
+        if ("album".equalsIgnoreCase(type)) {
+            entity = "album";
+        } else if ("artist".equalsIgnoreCase(type)) {
+            entity = "musicArtist";
+        }
+
         String url = UriComponentsBuilder.fromHttpUrl(ITUNES_SEARCH_URL)
                 .queryParam("term", query)
-                .queryParam("entity", "album")
+                .queryParam("entity", entity)
                 .queryParam("limit", 25)
                 .build()
                 .toUriString();
@@ -42,7 +49,7 @@ public class SearchService {
         List<AlbumSearchResult> results = new ArrayList<>();
         if (root != null && root.has("results")) {
             for (JsonNode item : root.get("results")) {
-                results.add(mapToAlbumResult(item));
+                results.add(mapToResult(item));
             }
         }
 
@@ -53,17 +60,30 @@ public class SearchService {
                 .build();
     }
 
-    private AlbumSearchResult mapToAlbumResult(JsonNode item) {
+    public SearchResponse searchAlbums(String query) {
+        return searchCatalog(query, "song");
+    }
+
+    private AlbumSearchResult mapToResult(JsonNode item) {
+        long catalogId = item.has("trackId") && !item.get("trackId").isNull()
+                ? item.path("trackId").asLong()
+                : item.path("collectionId").asLong(item.path("artistId").asLong());
+
+        String title = item.has("trackName") && !item.get("trackName").isNull()
+                ? item.path("trackName").asText()
+                : item.path("collectionName").asText(item.path("artistName").asText(""));
+
         return AlbumSearchResult.builder()
-                .appleCatalogId(item.path("collectionId").asLong())
-                .title(item.path("collectionName").asText(null))
-                .artistName(item.path("artistName").asText(null))
+                .appleCatalogId(catalogId)
+                .title(title)
+                .artistName(item.path("artistName").asText(""))
+                .collectionName(item.path("collectionName").asText(null))
                 .genre(item.path("primaryGenreName").asText(null))
                 .releaseDate(parseReleaseDate(item.path("releaseDate").asText(null)))
-                .trackCount(item.has("trackCount") && !item.get("trackCount").isNull()
-                        ? item.get("trackCount").asInt()
-                        : null)
+                .trackCount(item.has("trackCount") && !item.get("trackCount").isNull() ? item.get("trackCount").asInt() : null)
+                .durationMillis(item.has("trackTimeMillis") && !item.get("trackTimeMillis").isNull() ? item.get("trackTimeMillis").asLong() : null)
                 .artworkUrl(item.path("artworkUrl100").asText(null))
+                .previewUrl(item.path("previewUrl").asText(null))
                 .build();
     }
 

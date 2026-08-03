@@ -18,8 +18,11 @@ public class AlbumSearchResult {
     private Long appleCatalogId;
     private String title;
     private String artistName;
+    private String collectionName;
     private String genre;
     private LocalDate releaseDate;
     private Integer trackCount;
+    private Long durationMillis;
     private String artworkUrl;
+    private String previewUrl;
 }

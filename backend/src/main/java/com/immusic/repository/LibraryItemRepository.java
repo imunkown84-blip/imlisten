@@ -5,12 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface LibraryItemRepository extends JpaRepository<LibraryItem, UUID> {
 
     Page<LibraryItem> findByUserId(UUID userId, Pageable pageable);
+
+    List<LibraryItem> findByUserIdOrderByCreatedAtDesc(UUID userId);
 
     Page<LibraryItem> findByUserIdAndGenreIgnoreCase(UUID userId, String genre, Pageable pageable);
 

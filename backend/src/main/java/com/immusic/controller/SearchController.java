@@ -21,11 +21,8 @@ public class SearchController {
     @GetMapping
     public SearchResponse search(
             @RequestParam @NotBlank String query,
-            @RequestParam(defaultValue = "album") String type
+            @RequestParam(defaultValue = "song") String type
     ) {
-        if (!"album".equalsIgnoreCase(type)) {
-            throw new IllegalArgumentException("Only type=album is supported");
-        }
-        return searchService.searchAlbums(query);
+        return searchService.searchCatalog(query, type);
     }
 }
