@@ -23,10 +23,21 @@ public class SearchService {
     private static final String ITUNES_SEARCH_URL = "https://itunes.apple.com/search";
     private static final DateTimeFormatter ITUNES_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private final RestClient restClient = RestClient.create();
+    private final RestClient restClient = RestClient.builder()
+            .defaultHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36")
+            .defaultHeader("Accept", "application/json")
+            .build();
 
     @Cacheable(value = "itunesSearch", key = "#query.toLowerCase() + '_' + #type.toLowerCase()")
     public SearchResponse searchCatalog(String query, String type) {
+        if (query == null || query.isBlank()) {
+            return SearchResponse.builder()
+                    .query(query)
+                    .resultCount(0)
+                    .results(new ArrayList<>())
+                    .build();
+        }
+
         String entity = "song";
         if ("album".equalsIgnoreCase(type)) {
             entity = "album";
@@ -34,23 +45,28 @@ public class SearchService {
             entity = "musicArtist";
         }
 
-        String url = UriComponentsBuilder.fromHttpUrl(ITUNES_SEARCH_URL)
-                .queryParam("term", query)
-                .queryParam("entity", entity)
-                .queryParam("limit", 25)
-                .build()
-                .toUriString();
-
-        JsonNode root = restClient.get()
-                .uri(url)
-                .retrieve()
-                .body(JsonNode.class);
-
         List<AlbumSearchResult> results = new ArrayList<>();
-        if (root != null && root.has("results")) {
-            for (JsonNode item : root.get("results")) {
-                results.add(mapToResult(item));
+        try {
+            java.net.URI uri = UriComponentsBuilder.fromHttpUrl(ITUNES_SEARCH_URL)
+                    .queryParam("term", query)
+                    .queryParam("entity", entity)
+                    .queryParam("limit", 25)
+                    .build()
+                    .encode()
+                    .toUri();
+
+            JsonNode root = restClient.get()
+                    .uri(uri)
+                    .retrieve()
+                    .body(JsonNode.class);
+
+            if (root != null && root.has("results")) {
+                for (JsonNode item : root.get("results")) {
+                    results.add(mapToResult(item));
+                }
             }
+        } catch (Exception ex) {
+            log.error("Failed to fetch search results from iTunes API for query='{}': {}", query, ex.getMessage(), ex);
         }
 
         return SearchResponse.builder()
@@ -67,7 +83,7 @@ public class SearchService {
     private AlbumSearchResult mapToResult(JsonNode item) {
         long catalogId = item.has("trackId") && !item.get("trackId").isNull()
                 ? item.path("trackId").asLong()
-                : item.path("collectionId").asLong(item.path("artistId").asLong());
+                : item.path("collectionId").asLong(item.path("artistId").asLong(0L));
 
         String title = item.has("trackName") && !item.get("trackName").isNull()
                 ? item.path("trackName").asText()
@@ -77,18 +93,18 @@ public class SearchService {
                 .appleCatalogId(catalogId)
                 .title(title)
                 .artistName(item.path("artistName").asText(""))
-                .collectionName(item.path("collectionName").asText(null))
-                .genre(item.path("primaryGenreName").asText(null))
-                .releaseDate(parseReleaseDate(item.path("releaseDate").asText(null)))
+                .collectionName(item.has("collectionName") && !item.get("collectionName").isNull() ? item.path("collectionName").asText() : null)
+                .genre(item.has("primaryGenreName") && !item.get("primaryGenreName").isNull() ? item.path("primaryGenreName").asText() : null)
+                .releaseDate(parseReleaseDate(item.has("releaseDate") && !item.get("releaseDate").isNull() ? item.path("releaseDate").asText() : null))
                 .trackCount(item.has("trackCount") && !item.get("trackCount").isNull() ? item.get("trackCount").asInt() : null)
                 .durationMillis(item.has("trackTimeMillis") && !item.get("trackTimeMillis").isNull() ? item.get("trackTimeMillis").asLong() : null)
-                .artworkUrl(item.path("artworkUrl100").asText(null))
-                .previewUrl(item.path("previewUrl").asText(null))
+                .artworkUrl(item.has("artworkUrl100") && !item.get("artworkUrl100").isNull() ? item.path("artworkUrl100").asText() : null)
+                .previewUrl(item.has("previewUrl") && !item.get("previewUrl").isNull() ? item.path("previewUrl").asText() : null)
                 .build();
     }
 
     private LocalDate parseReleaseDate(String releaseDate) {
-        if (releaseDate == null || releaseDate.isBlank()) {
+        if (releaseDate == null || releaseDate.isBlank() || releaseDate.length() < 10) {
             return null;
         }
         try {

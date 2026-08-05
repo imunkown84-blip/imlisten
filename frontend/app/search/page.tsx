@@ -51,10 +51,10 @@ export default function SearchPage() {
       setLoading(true);
       setError(null);
       try {
-        const { data } = await api.get<SearchResult[]>('/api/search', {
+        const { data } = await api.get<any>('/api/search', {
           params: { query: trimmed, type: 'song', limit: 25 }
         });
-        setResults(data);
+        setResults(Array.isArray(data) ? data : (data?.results || []));
         setHasSearched(true);
       } catch (err: any) {
         const status = err?.response?.status;
