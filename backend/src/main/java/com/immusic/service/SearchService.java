@@ -28,7 +28,11 @@ public class SearchService {
             .defaultHeader("Accept", "application/json")
             .build();
 
-    @Cacheable(value = "itunesSearch", key = "#query.toLowerCase() + '_' + #type.toLowerCase()")
+    @Cacheable(
+            value = "itunesSearch",
+            key = "#query.toLowerCase() + '_' + #type.toLowerCase()",
+            unless = "#result == null || #result.results == null || #result.results.isEmpty()"
+    )
     public SearchResponse searchCatalog(String query, String type) {
         if (query == null || query.isBlank()) {
             return SearchResponse.builder()
@@ -62,7 +66,14 @@ public class SearchService {
 
             if (root != null && root.has("results")) {
                 for (JsonNode item : root.get("results")) {
-                    results.add(mapToResult(item));
+                    try {
+                        AlbumSearchResult res = mapToResult(item);
+                        if (res != null) {
+                            results.add(res);
+                        }
+                    } catch (Exception itemEx) {
+                        log.warn("Failed to map iTunes item: {}", itemEx.getMessage());
+                    }
                 }
             }
         } catch (Exception ex) {
