@@ -4,7 +4,7 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://loca
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 60000,
   headers: { 'Content-Type': 'application/json' }
 });
 
@@ -37,10 +37,16 @@ api.interceptors.response.use(
 export function extractErrorMessage(err: unknown): string {
   if (axios.isAxiosError(err)) {
     if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
-      return 'Server response timed out. Please check if the backend server is running on port 8082.';
+      if (API_BASE_URL.includes('localhost')) {
+        return 'Server response timed out. Please check if the local backend server is running on port 8082.';
+      }
+      return 'Server response timed out. The backend server (Render free tier) may be cold-starting. Please wait ~30 seconds and try again.';
     }
     if (err.code === 'ERR_NETWORK') {
-      return 'Cannot connect to backend server. Please verify backend is running on port 8082.';
+      if (API_BASE_URL.includes('localhost')) {
+        return 'Cannot connect to backend server. Please verify backend is running on port 8082.';
+      }
+      return `Cannot connect to backend server at ${API_BASE_URL}. Please verify backend URL and CORS settings.`;
     }
     const data = err.response?.data as { message?: string; details?: string[] } | undefined;
     if (data?.details?.length) return data.details.join(', ');
